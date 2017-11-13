@@ -1,5 +1,6 @@
-export var breakPoint = 0;
-module.exports =  (_text = 'Test', testId = '', factVal, modelVal) => {
+module.exports = exports = window.breakPoint = 0;
+
+module.exports = exports = window.letsTest = (_text = 'Test', testId = '', factVal, modelVal) => {
 
 		/* Try-catch-throw-final: As a matter of future devices 
 			try{

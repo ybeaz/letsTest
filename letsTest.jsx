@@ -140,7 +140,7 @@ module.exports = exports = window.letsTest = (_text = 'Test', testId = '', factV
 			(typeof modelVal === 'object' && modelVal.constructor === Object && 
 			 Object.keys(modelVal).length === 0)){  //New line	
 
-				console.info('%c' + textTemp + nbsp + ' #' + breakPoint + testId +
+				console.info('%c' + textTemp + nbsp + ' #' + window.breakPoint + testId +
 							' fact:' ,  "color: blue; font-size:13px; font-weight: bold;",
 							factVal);	
 		}
@@ -148,18 +148,18 @@ module.exports = exports = window.letsTest = (_text = 'Test', testId = '', factV
 			
 			if(	toEqualVal === 'true'){
 				const cTrue = '%ctrue!';
-				console.info('%c' + textTemp + nbsp + ' #' + breakPoint + testId +
+				console.info('%c' + textTemp + nbsp + ' #' + window.breakPoint + testId +
 							' test: ' + 'true',  "color: green; font-size:13px; font-weight: bold;",
 							'  model:', modelVal, ' fact:', factVal);
 			}
 			else{
-				console.info('%c' + textTemp + nbsp + ' #' + breakPoint + testId +
+				console.info('%c' + textTemp + nbsp + ' #' + window.breakPoint + testId +
 							' test: ' + 'false',  "color: #e65c00; font-size:13px; font-weight: bold;",
 							' model:', modelVal, ' fact:', factVal);			
 			};
 		};
 			
-		breakPoint += 1;
+		window.breakPoint += 1;
 		return;
 	}
 	//letsTest('START', /* testId */ '', /* expect */ [], /* toEqual */ [] );

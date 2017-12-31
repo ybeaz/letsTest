@@ -1,6 +1,28 @@
-module.exports = exports = window.breakPoint = 0;
+	window.breakPoint = 0;
 
-module.exports = exports = window.letsTest = (_text = 'Test', testId = '', factVal, modelVal) => {
+	//About text	
+	let nbspSpace = (_text) => {
+		let textTemp = '', n = 20;
+		
+		const nbspLen = (n) => {
+			let nbsp = '';
+			for(let i = 0; i < n; i++){
+				nbsp = nbsp + ' ';
+			}
+			//console.info(' nbsp:',nbsp);
+			return nbsp;
+		}
+		
+		(_text.length < n ? textTemp = _text + nbspLen((n - _text.length)) : textTemp = _text);
+		
+		return textTemp;
+		//console.info(' textTemp:',textTemp);	
+	}
+	
+	
+	
+	
+export const Test = (_text = 'Test', testId = '', factVal, modelVal) => {
 
 		/* Try-catch-throw-final: As a matter of future devices 
 			try{
@@ -88,22 +110,12 @@ module.exports = exports = window.letsTest = (_text = 'Test', testId = '', factV
 			factValTest = factVal;
 		}
 
-
 		let		toEqualVal 	=	'false';
-		
+
+
 		//About text
-		let nbspLen = (n) => {
-			let nbsp = '';
-			for(let i = 0; i < n; i++){
-				nbsp = nbsp + ' ';
-			}
-			//console.info(' nbsp:',nbsp);
-			return nbsp;
-		}
-		
-		let textTemp = '', n = 20;
-		(_text.length < n ? textTemp = _text + nbspLen((n - _text.length)) : textTemp = _text);
-			//console.info(' textTemp:',textTemp);
+		let textTemp 	= 	nbspSpace(_text);
+		//console.info(' textTemp Test:',textTemp);
 		
 		//About equality
 		//console.info(modelValTemp, '\n', factValTemp, '\n', factValTemp === modelValTemp);
@@ -162,4 +174,142 @@ module.exports = exports = window.letsTest = (_text = 'Test', testId = '', factV
 		window.breakPoint += 1;
 		return;
 	}
+
 	//letsTest('START', /* testId */ '', /* expect */ [], /* toEqual */ [] );
+
+/*	*/
+export function Loggin(_text,func){
+	let next = func;
+	
+	return function (next){
+		// Add a new method available on all function values
+		//https://stackoverflow.com/questions/10624057/get-name-as-string-from-a-javascript-function-reference
+		Function.prototype.getName = function(){
+			// Find zero or more non-paren chars after the function start
+			return /function ([^(]*)/.exec( this+"" )[1];
+		};
+		
+		
+		/*	*/
+		var arg = {};
+		var argNum = 0;
+		for(var argName in arguments){
+			
+			if(	typeof arguments[argName] !== 'function' 	&&
+				argName !== '__proto__'
+			){
+				arg[argName]	=	arguments[argName];
+				argNum++;
+			}
+			//arg += arguments[argName] + ', ';
+		}
+		
+		//About text
+		let textTemp 	= 	nbspSpace(_text);
+		//console.info(' textTemp Loggin:',textTemp);
+		let nbsp	=	' ';
+		
+		const  returnValue = func.apply(this, arguments);
+
+		if(		argNum === 0){
+			console.info('%c' + textTemp + nbsp + ' #' + breakPoint + ' ' + func.getName(),
+			"color: #E91E63; font-size:13px; font-weight: bold;",
+			'(', 
+			')', '=', returnValue);
+		}
+		else if(argNum	=== 1){
+			console.info('%c' + textTemp + nbsp + ' #' + breakPoint + ' ' + func.getName(),
+			"color: #E91E63; font-size:13px; font-weight: bold;",
+			'(', 
+			arg[0],
+			')', '=', returnValue);
+		}
+		else if(argNum	=== 2){
+			console.info('%c' + textTemp + nbsp + ' #' + breakPoint + ' ' + func.getName(),
+			"color: #E91E63; font-size:13px; font-weight: bold;",
+			'(', 
+			arg[0],',',arg[1],
+			')', '=', returnValue);
+		}
+		else if(argNum	=== 3){
+			console.info('%c' + textTemp + nbsp + ' #' + breakPoint + ' ' + func.getName(),
+			"color: #E91E63; font-size:13px; font-weight: bold;",
+			'(', 
+			arg[0],',',arg[1],',',arg[2],
+			')', '=', returnValue);
+		}
+		else if(argNum	=== 4){
+			console.info('%c' + textTemp + nbsp + ' #' + breakPoint + ' ' + func.getName(),
+			"color: #E91E63; font-size:13px; font-weight: bold;",
+			'(',
+			arg[0],',',arg[1],',',arg[2],',',arg[3],
+			')', '=', returnValue);
+		}
+		else if(argNum	=== 5){
+			console.info('%c' + textTemp + nbsp + ' #' + breakPoint + ' ' + func.getName(),
+			"color: #E91E63; font-size:13px; font-weight: bold;",
+			'(',
+			arg[0],',',arg[1],',',arg[2],',',arg[3],',',arg[4],
+			')', '=', returnValue);
+		}
+		else{
+			console.info('%c' + textTemp + nbsp + ' #' + breakPoint + ' ' + func.getName(),
+			"color: #E91E63; font-size:13px; font-weight: bold;",
+			'(',
+			arg,
+			')', '=', returnValue);
+		}		
+		window.breakPoint += 1;
+		return returnValue;
+	}
+}
+
+
+/*
+
+			let A = [
+						{id: 0, rank: 0, head: 'Head 00', text: 'Text 00', edit: false, status: 'active'},							
+						{id: 2, rank: 0, head: 'Head 02', text: 'Text 02', edit: true, 	status: 'active'},
+						{id: 3, rank: 0, head: 'Head 03', text: 'Text 03', edit: false, status: 'active'},
+						{id: 4, rank: 0, head: 'Head 04', text: 'Text 04', edit: false, status: 'active'}
+			];		
+		
+			let B = [
+						{id: 0, rank: 0, head: 'Head 00', text: 'Text 00', edit: false, status: 'active'},							
+						{id: 2, rank: 0, head: 'Head 02', text: 'Text 02', edit: true, 	status: 'active'},
+						{id: 3, rank: 0, head: 'Head 03', text: 'Text 03', edit: false, status: 'active'},
+						{id: 4, rank: 0, head: 'Head 04', text: 'Text 04', edit: false, status: 'active'}
+			];		
+		
+
+			function add_1(x,y){
+				return x+y;
+			}
+			//add_1 = lets.Loggin('Func loggin',add_1);
+			add_1(3,5);
+		
+			function arr_1(x,y){
+				let z = [];
+				z.push(x);
+				z.push(y);
+				return z;
+			}
+			//arr_1 = lets.Loggin('',arr_1);
+			arr_1(3,5);
+			arr_1(A,B);
+			
+			
+			function obj_1(x,y){
+				let z = {};
+				z.x = x;
+				z.y = y;
+				return z;
+			}
+			//obj_1 = lets.Loggin('',obj_1);
+			obj_1(3,5);
+		
+	
+	(typeof arg[0] !== 'undefined' ? arg[0] : ''), (typeof arg[1] !== 'undefined' ? ',' : ''),
+	(typeof arg[1] !== 'undefined' ? arg[1] : ''), (typeof arg[2] !== 'undefined' ? ',' : ''),
+	(typeof arg[2] !== 'undefined' ? arg[2] : ''), (typeof arg[3] !== 'undefined' ? ',' : '')
+*/

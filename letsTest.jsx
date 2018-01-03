@@ -21,7 +21,7 @@
 	
 	
 	
-	
+/* Function to text function with pattern model <-> fact */
 export const Test = (_text = 'Test', testId = '', factVal, modelVal) => {
 
 		/* Try-catch-throw-final: As a matter of future devices 
@@ -177,7 +177,7 @@ export const Test = (_text = 'Test', testId = '', factVal, modelVal) => {
 
 	//letsTest('START', /* testId */ '', /* expect */ [], /* toEqual */ [] );
 
-/*	*/
+/* Function to logging function with pattern input -> output */
 export function Loggin(_text,func){
 	let next = func;
 	
@@ -265,6 +265,23 @@ export function Loggin(_text,func){
 }
 
 
+/* Does not work. Function to wrap function with model if ? promise : function as it is 
+export const PromiseWrap = (func) => (next) => {
+		if(typeof next.then === 'function'){
+			return next.then;
+		}
+		return next;
+	}
+
+	//Self-made Wrapper function to wrap dispatch with try if is a promise
+	const promiseSM = (store)	=>  (next) => (action) => {
+		if(typeof action.then === 'function'){
+			return action.then(next);
+		}
+		return next(action);
+	}
+*/	
+	
 /*
 
 			let A = [

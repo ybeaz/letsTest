@@ -1,3 +1,9 @@
+
+/* Install sentry.io error exceptions catcher   */
+import Raven 		from 'raven-js';
+Raven.config('https://9eaeabf6f2484b84acfee9fab5e44cf0@sentry.io/106530', 
+{}).install();
+
 	window.breakPoint = 0;
 
 	//About text	
@@ -176,9 +182,10 @@ export const Test = (_text = 'Test', testId = '', factVal, modelVal) => {
 	}
 
 	//letsTest('START', /* testId */ '', /* expect */ [], /* toEqual */ [] );
-
+	
+	
 /* Function to logging function with pattern input -> output */
-export function Loggin(_text,func){
+export function Logger(_text, func){
 	let next = func;
 	
 	return function (next){
@@ -265,6 +272,30 @@ export function Loggin(_text,func){
 }
 
 
+
+/* Function for throwing exceptions with pattern try -> catch - Raven */
+export function Exception(_text, func){
+
+	let next = func;
+
+	return function funcAndException(argNext) {
+		try {
+			return func.apply(this, arguments);
+		} 
+		catch (err) {
+			console.error('Caught an exception!', err)
+			Raven.captureException(err, {
+				extra: {
+
+				}
+			})
+			throw err;
+		}
+	}	
+}
+
+
+
 /* Does not work. Function to wrap function with model if ? promise : function as it is 
 export const PromiseWrap = (func) => (next) => {
 		if(typeof next.then === 'function'){
@@ -281,9 +312,9 @@ export const PromiseWrap = (func) => (next) => {
 		return next(action);
 	}
 */	
-	
-/*
 
+
+/*
 			let A = [
 						{id: 0, rank: 0, head: 'Head 00', text: 'Text 00', edit: false, status: 'active'},							
 						{id: 2, rank: 0, head: 'Head 02', text: 'Text 02', edit: true, 	status: 'active'},
@@ -302,8 +333,11 @@ export const PromiseWrap = (func) => (next) => {
 			function add_1(x,y){
 				return x+y;
 			}
-			//add_1 = lets.Loggin('Func loggin',add_1);
-			add_1(3,5);
+			add_1 = Logger('Logger',add_1);
+			add_1 = Exception('Exception',add_1);
+			
+			let x = add_1(3,5);
+			console.info(' add_1(3,5):',x);
 		
 			function arr_1(x,y){
 				let z = [];
@@ -324,9 +358,6 @@ export const PromiseWrap = (func) => (next) => {
 			}
 			//obj_1 = lets.Loggin('',obj_1);
 			obj_1(3,5);
-		
+*/		
 	
-	(typeof arg[0] !== 'undefined' ? arg[0] : ''), (typeof arg[1] !== 'undefined' ? ',' : ''),
-	(typeof arg[1] !== 'undefined' ? arg[1] : ''), (typeof arg[2] !== 'undefined' ? ',' : ''),
-	(typeof arg[2] !== 'undefined' ? arg[2] : ''), (typeof arg[3] !== 'undefined' ? ',' : '')
-*/
+

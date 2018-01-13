@@ -25,7 +25,31 @@ Raven.config('https://9eaeabf6f2484b84acfee9fab5e44cf0@sentry.io/106530',
 		//console.info(' textTemp:',textTemp);	
 	}
 	
-	
+	// Add a new method available on all function values
+	//https://stackoverflow.com/questions/10624057/get-name-as-string-from-a-javascript-function-reference
+	Function.prototype.getName = function(){
+		// Find zero or more non-paren chars after the function start
+		return /function ([^(]*)/.exec( this+"" )[1];
+	};	
+
+	/* Function to get argumements array */
+	function getArgArr(argum){
+			
+		var arg = {};
+		var argNum = 0;
+		for(var argName in argum){
+			
+			if(	typeof argum[argName] !== 'function' 	&&
+				argName !== '__proto__'
+			){
+				arg[argName]	=	argum[argName];
+				argNum++;
+			}
+			//arg += argum[argName] + ', ';
+		}
+		return arg;
+	}
+
 	
 /* Function to text function with pattern model <-> fact */
 export const Test = (_text = 'Test', testId = '', factVal, modelVal) => {
@@ -189,27 +213,9 @@ export function Logger(_text, func){
 	let next = func;
 	
 	return function (next){
-		// Add a new method available on all function values
-		//https://stackoverflow.com/questions/10624057/get-name-as-string-from-a-javascript-function-reference
-		Function.prototype.getName = function(){
-			// Find zero or more non-paren chars after the function start
-			return /function ([^(]*)/.exec( this+"" )[1];
-		};
 		
-		
-		/*	*/
-		var arg = {};
-		var argNum = 0;
-		for(var argName in arguments){
-			
-			if(	typeof arguments[argName] !== 'function' 	&&
-				argName !== '__proto__'
-			){
-				arg[argName]	=	arguments[argName];
-				argNum++;
-			}
-			//arg += arguments[argName] + ', ';
-		}
+		//About arguments array
+		const arg = getArgArr(arguments);
 		
 		//About text
 		let textTemp 	= 	nbspSpace(_text);
@@ -293,6 +299,50 @@ export function Exception(_text, func){
 		}
 	}	
 }
+
+
+
+/* Function to delay function fulfilment */
+export	function Delay (_text, func, ms){
+	
+		//About text
+		let textTemp 	= 	nbspSpace(_text);
+		//console.info(' textTemp Loggin:',textTemp);
+		let nbsp	=	' ';
+
+		let next = func;
+
+		const delay =	(ms) => {
+			return new Promise(resolve => setTimeout(resolve, ms));
+		};
+
+		return function (next){
+
+			//About arguments array
+			const arg = getArgArr(arguments);
+
+			//About function name
+			const funcName = func.getName();
+			
+			delay(ms)
+				.then(() => {
+					const  returnValue = func.apply(this, arguments);
+					
+					console.info('%c' + textTemp + nbsp + ' #' + breakPoint + ' ',
+					"color: #5D4037; font-size:13px; font-weight: bold;", funcName,
+					'=', 
+					arg,
+					'', '=>', returnValue);					
+					
+					return returnValue;
+				})
+				.catch(error => {
+					console.info(' error: ',error);
+				});
+		}
+	}
+
+
 
 
 

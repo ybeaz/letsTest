@@ -343,8 +343,71 @@ export	function Delay (_text, func, ms){
 	}
 
 
+/* Arrow wrap function to delay function fulfilment    AFW Arrow Function Wrapper */
+export	const DelayAFW = (_text, ms) => (func) => (...args) =>  {
+	
+		//About text
+		let textTemp 	= 	nbspSpace(_text);
+		//console.info(' textTemp Loggin:',textTemp);
+		let nbsp	=	' ';
+
+		const delay =	(ms) => {
+			return new Promise(resolve => setTimeout(resolve, ms));
+		};
+		
+		
+		//About arguments array
+		const arg = getArgArr(...args);
+
+		//About function name
+		const funcName = func.getName();	
+	
+		delay(ms)
+			.then(() => {
+				const  returnValue = func(...args);
+				
+				console.info('%c' + textTemp + nbsp + ' #' + breakPoint + ' ',
+				"color: #5D4037; font-size:13px; font-weight: bold;", funcName,
+				'=', 
+				...args,
+				'', '=>', returnValue);					
+				
+				return returnValue;
+			})
+			.catch(error => {
+				console.info(' error: ',error);
+			});
+
+		/*
+			const arrowFunc = (...args) => { 
+				console.info(' arrowFunc(...args):',args);
+				return;
+			}
+			arrowFunc('abc',[1,2,3],{a: 10, b: 20});
+		*/
+
+	}	
+	
 
 
+
+/*	
+	let aPb = function(a,b){
+		
+		const c = a+b;
+		console.info(' aPb(',a,b,')=',c);
+		return c;
+		
+	}
+
+	aPb(6,5);
+	
+	aPb = DelayAFW('text',1500)(aPb);
+	
+	aPb(6,5);
+	
+*/	
+	
 
 /* Does not work. Function to wrap function with model if ? promise : function as it is 
 export const PromiseWrap = (func) => (next) => {
